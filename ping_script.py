@@ -24,8 +24,8 @@ def visit_site():
     except Exception as e:
         print(f"error: {e}")
 
-# Бесконечный цикл
+# Бесконечный цикл с интервалом 3 секунды
 if __name__ == "__main__":
     while True:
         visit_site()
-        time.sleep(60)  # Пауза 60 секунд между запросами
+        time.sleep(3)  # Пауза 3 секунды между запросами
