@@ -64,7 +64,7 @@ if __name__ == "__main__":
         if 0 <= current_hour < 6:
             proxy = next(proxy_pool)
             visit_site(proxy)
-            time.sleep(3)  # Пауза 3 секунды между запросами
+            time.sleep(2)  # Пауза 3 секунды между запросами
         else:
             print("Вне заданного времени работы (2:00–8:00 по Киеву). Ожидание...")
             time.sleep(60)  # Проверка времени раз в минуту
