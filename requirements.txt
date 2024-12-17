@@ -1,5 +1,3 @@
 requests
-cloudscraper
+python-dotenv
 schedule
-selenium
-undetected-chromedriver
