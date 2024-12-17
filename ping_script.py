@@ -41,7 +41,7 @@ proxy_pool = cycle(PROXIES)
 def visit_site(proxy):
     try:
         print(f"Посещение сайта через прокси: {proxy['http']}")
-        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=10)
+        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=4)
         if response.status_code == 200:
             print("done")
         else:
