@@ -56,7 +56,7 @@ if __name__ == "__main__":
         current_hour = datetime.utcnow().hour
 
         # Проверяем, что время между 1:00 и 5:00 UTC (3:00–7:00 по Киеву)
-        if 0 <= current_hour < 6:
+        if 1 <= current_hour < 7:
             proxy = next(proxy_pool)
             visit_site(proxy)
             time.sleep(1)  # Пауза 1 секунды между запросами
