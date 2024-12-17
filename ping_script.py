@@ -1,8 +1,9 @@
 import requests
 import time
+from itertools import cycle
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+URL = "http://webdesign-finder.com/cogniart"
 
 # Заголовки для имитации браузера
 HEADERS = {
@@ -13,10 +14,38 @@ HEADERS = {
     "Connection": "keep-alive"
 }
 
+# Список прокси
+PROXIES = [
+    {"http": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001",
+     "https": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001"},
+    {"http": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002",
+     "https": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002"},
+    {"http": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003",
+     "https": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003"},
+    {"http": "http://hFPncvbbuc_3:22VnEeaqTBFI@s-17704.sp6.ovh:11004",
+     "https": "http://hFPncvbbuc_3:22VnEeaqTBFI@s-17704.sp6.ovh:11004"},
+    {"http": "http://hFPncvbbuc_4:22VnEeaqTBFI@s-17704.sp6.ovh:11005",
+     "https": "http://hFPncvbbuc_4:22VnEeaqTBFI@s-17704.sp6.ovh:11005"},
+    {"http": "http://hFPncvbbuc_5:22VnEeaqTBFI@s-17704.sp6.ovh:11006",
+     "https": "http://hFPncvbbuc_5:22VnEeaqTBFI@s-17704.sp6.ovh:11006"},
+    {"http": "http://hFPncvbbuc_6:22VnEeaqTBFI@s-17704.sp6.ovh:11007",
+     "https": "http://hFPncvbbuc_6:22VnEeaqTBFI@s-17704.sp6.ovh:11007"},
+    {"http": "http://hFPncvbbuc_7:22VnEeaqTBFI@s-17704.sp6.ovh:11008",
+     "https": "http://hFPncvbbuc_7:22VnEeaqTBFI@s-17704.sp6.ovh:11008"},
+    {"http": "http://hFPncvbbuc_8:22VnEeaqTBFI@s-17704.sp6.ovh:11009",
+     "https": "http://hFPncvbbuc_8:22VnEeaqTBFI@s-17704.sp6.ovh:11009"},
+    {"http": "http://hFPncvbbuc_9:22VnEeaqTBFI@s-17704.sp6.ovh:11010",
+     "https": "http://hFPncvbbuc_9:22VnEeaqTBFI@s-17704.sp6.ovh:11010"}
+]
+
+# Итератор по прокси
+proxy_pool = cycle(PROXIES)
+
 # Функция для посещения страницы
-def visit_site():
+def visit_site(proxy):
     try:
-        response = requests.get(URL, headers=HEADERS, timeout=10)
+        print(f"Посещение сайта через прокси: {proxy['http']}")
+        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=10)
         if response.status_code == 200:
             print("done")
         else:
@@ -24,8 +53,8 @@ def visit_site():
     except Exception as e:
         print(f"error: {e}")
 
-# Бесконечный цикл с интервалом 3 секунды
+# Основной цикл
 if __name__ == "__main__":
-    while True:
-        visit_site()
+    for proxy in proxy_pool:
+        visit_site(proxy)
         time.sleep(3)  # Пауза 3 секунды между запросами
