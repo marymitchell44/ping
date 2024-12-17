@@ -1,7 +1,12 @@
+from dotenv import load_dotenv
+import os
 import requests
 import time
 from itertools import cycle
 from datetime import datetime
+
+# Загрузка переменных из файла .env
+load_dotenv()
 
 # URL для посещения
 URL = "http://webdesign-finder.com/cogniart"
@@ -15,28 +20,18 @@ HEADERS = {
     "Connection": "keep-alive"
 }
 
-# Список прокси
+# Список прокси из переменных окружения
 PROXIES = [
-    {"http": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001",
-     "https": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001"},
-    {"http": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002",
-     "https": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002"},
-    {"http": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003",
-     "https": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003"},
-    {"http": "http://hFPncvbbuc_3:22VnEeaqTBFI@s-17704.sp6.ovh:11004",
-     "https": "http://hFPncvbbuc_3:22VnEeaqTBFI@s-17704.sp6.ovh:11004"},
-    {"http": "http://hFPncvbbuc_4:22VnEeaqTBFI@s-17704.sp6.ovh:11005",
-     "https": "http://hFPncvbbuc_4:22VnEeaqTBFI@s-17704.sp6.ovh:11005"},
-    {"http": "http://hFPncvbbuc_5:22VnEeaqTBFI@s-17704.sp6.ovh:11006",
-     "https": "http://hFPncvbbuc_5:22VnEeaqTBFI@s-17704.sp6.ovh:11006"},
-    {"http": "http://hFPncvbbuc_6:22VnEeaqTBFI@s-17704.sp6.ovh:11007",
-     "https": "http://hFPncvbbuc_6:22VnEeaqTBFI@s-17704.sp6.ovh:11007"},
-    {"http": "http://hFPncvbbuc_7:22VnEeaqTBFI@s-17704.sp6.ovh:11008",
-     "https": "http://hFPncvbbuc_7:22VnEeaqTBFI@s-17704.sp6.ovh:11008"},
-    {"http": "http://hFPncvbbuc_8:22VnEeaqTBFI@s-17704.sp6.ovh:11009",
-     "https": "http://hFPncvbbuc_8:22VnEeaqTBFI@s-17704.sp6.ovh:11009"},
-    {"http": "http://hFPncvbbuc_9:22VnEeaqTBFI@s-17704.sp6.ovh:11010",
-     "https": "http://hFPncvbbuc_9:22VnEeaqTBFI@s-17704.sp6.ovh:11010"}
+    {"http": os.getenv("PROXY_0"), "https": os.getenv("PROXY_0")},
+    {"http": os.getenv("PROXY_1"), "https": os.getenv("PROXY_1")},
+    {"http": os.getenv("PROXY_2"), "https": os.getenv("PROXY_2")},
+    {"http": os.getenv("PROXY_3"), "https": os.getenv("PROXY_3")},
+    {"http": os.getenv("PROXY_4"), "https": os.getenv("PROXY_4")},
+    {"http": os.getenv("PROXY_5"), "https": os.getenv("PROXY_5")},
+    {"http": os.getenv("PROXY_6"), "https": os.getenv("PROXY_6")},
+    {"http": os.getenv("PROXY_7"), "https": os.getenv("PROXY_7")},
+    {"http": os.getenv("PROXY_8"), "https": os.getenv("PROXY_8")},
+    {"http": os.getenv("PROXY_9"), "https": os.getenv("PROXY_9")},
 ]
 
 # Итератор по прокси
@@ -61,7 +56,7 @@ if __name__ == "__main__":
         current_hour = datetime.utcnow().hour
 
         # Проверяем, что время между 1:00 и 5:00 UTC (3:00–7:00 по Киеву)
-        if 1 <= current_hour < 5:
+        if 0 <= current_hour < 6:
             proxy = next(proxy_pool)
             visit_site(proxy)
             time.sleep(2)  # Пауза 2 секунды между запросами
