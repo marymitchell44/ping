@@ -1,3 +1,5 @@
 requests
 cloudscraper
 schedule
+selenium
+undetected-chromedriver
