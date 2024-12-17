@@ -2,37 +2,42 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+import os
 import time
 from datetime import datetime
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+URL = "https://webdesign-finder.com/cogniart/404"
 
-# Настройки прокси
+# Настройка прокси
 PROXIES_LIST = [
     "hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001",
     "hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002",
     "hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003",
 ]
 
+# Путь к Chromedriver на Heroku
+CHROMEDRIVER_PATH = "/usr/bin/chromedriver"
+GOOGLE_CHROME_SHIM = "/app/.apt/usr/bin/google-chrome"
+
 def visit_site(proxy):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
-        # Настройка Selenium с прокси
+        # Настройка параметров Chrome
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Запуск без интерфейса
+        chrome_options.binary_location = GOOGLE_CHROME_SHIM
+        chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument(f"--proxy-server=http://{proxy}")
 
-        # Запуск драйвера
-        service = Service("/usr/bin/chromedriver")  # Убедитесь, что chromedriver в PATH
+        # Запуск Chrome
+        service = Service(CHROMEDRIVER_PATH)
         driver = webdriver.Chrome(service=service, options=chrome_options)
-        
+
         print(f"[{now}] Пытаюсь посетить сайт через прокси: {proxy}")
         driver.get(URL)
 
-        # Проверка успешной загрузки
         if "404" not in driver.page_source:
             print(f"[{now}] Сайт успешно посещён через {proxy}")
         else:
