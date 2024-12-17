@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart"
+URL = "http://webdesign-finder.com/cogniart/404"
 
 # Заголовки для имитации браузера
 HEADERS = {
