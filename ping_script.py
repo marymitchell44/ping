@@ -1,6 +1,7 @@
 import requests
 import time
 from itertools import cycle
+from datetime import datetime
 
 # URL для посещения
 URL = "http://webdesign-finder.com/cogniart"
@@ -53,8 +54,17 @@ def visit_site(proxy):
     except Exception as e:
         print(f"error: {e}")
 
-# Основной цикл
+# Основной цикл с проверкой времени
 if __name__ == "__main__":
-    for proxy in proxy_pool:
-        visit_site(proxy)
-        time.sleep(3)  # Пауза 3 секунды между запросами
+    while True:
+        # Получаем текущее серверное время (UTC)
+        current_hour = datetime.utcnow().hour
+
+        # Проверяем, что время между 0:00 и 6:00 UTC (2:00–8:00 по Киеву)
+        if 0 <= current_hour < 6:
+            proxy = next(proxy_pool)
+            visit_site(proxy)
+            time.sleep(3)  # Пауза 3 секунды между запросами
+        else:
+            print("Вне заданного времени работы (2:00–8:00 по Киеву). Ожидание...")
+            time.sleep(60)  # Проверка времени раз в минуту
