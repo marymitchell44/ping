@@ -3,35 +3,39 @@ import time
 from datetime import datetime
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+URL = "https://webdesign-finder.com/cogniart/404"
 
-# Заголовки
+# Заголовки для имитации браузера
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
     "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Connection": "keep-alive",
-    "Upgrade-Insecure-Requests": "1"
 }
 
-# Прокси (замените на свои данные)
-PROXIES = {
-    "http": "http://202.61.204.51:80",
-    "https": "http://202.61.204.51:80"
-}
+# Список прокси с логином и паролем
+PROXIES_LIST = [
+    {"http": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001",
+     "https": "http://hFPncvbbuc_0:22VnEeaqTBFI@s-17704.sp6.ovh:11001"},
+    {"http": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002",
+     "https": "http://hFPncvbbuc_1:22VnEeaqTBFI@s-17704.sp6.ovh:11002"},
+    {"http": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003",
+     "https": "http://hFPncvbbuc_2:22VnEeaqTBFI@s-17704.sp6.ovh:11003"},
+]
 
 # Функция для посещения сайта
 def visit_site():
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    try:
-        response = requests.get(URL, headers=HEADERS, proxies=PROXIES, timeout=30)
-        if response.status_code == 200:
-            print(f"[{now}] Сайт успешно посещён. Код ответа: {response.status_code}")
-        else:
-            print(f"[{now}] Ошибка при посещении сайта. Код ответа: {response.status_code}")
-    except Exception as e:
-        print(f"[{now}] Ошибка: {e}")
+    for proxy in PROXIES_LIST:
+        try:
+            print(f"[{now}] Пытаюсь подключиться через прокси: {proxy['http']}")
+            response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=10)
+            if response.status_code == 200:
+                print(f"[{now}] Сайт успешно посещён через {proxy['http']}. Код ответа: {response.status_code}")
+                return
+            else:
+                print(f"[{now}] Ошибка при посещении сайта через {proxy['http']}. Код ответа: {response.status_code}")
+        except Exception as e:
+            print(f"[{now}] Прокси {proxy['http']} не сработал. Ошибка: {e}")
+    print(f"[{now}] Все прокси из списка недоступны.")
 
 # Планировщик
 def scheduler():
