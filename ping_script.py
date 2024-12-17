@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+URL = "http://webdesign-finder.com/cogniart"
 
 # Заголовки для имитации браузера
 HEADERS = {
@@ -41,7 +41,7 @@ proxy_pool = cycle(PROXIES)
 def visit_site(proxy):
     try:
         print(f"Посещение сайта через прокси: {proxy['http']}")
-        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=2)
+        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=1)
         if response.status_code == 200:
             print("done")
         else:
