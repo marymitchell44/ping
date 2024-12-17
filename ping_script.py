@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 # URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+URL = "https://webdesign-finder.com/cogniart/404"
 
 # Заголовки для имитации реального браузера
 HEADERS = {
