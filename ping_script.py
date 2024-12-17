@@ -1,4 +1,5 @@
 import requests
+import time
 
 # URL для посещения
 URL = "http://webdesign-finder.com/cogniart"
@@ -23,6 +24,8 @@ def visit_site():
     except Exception as e:
         print(f"error: {e}")
 
-# Запуск функции
+# Бесконечный цикл
 if __name__ == "__main__":
-    visit_site()
+    while True:
+        visit_site()
+        time.sleep(60)  # Пауза 60 секунд между запросами
