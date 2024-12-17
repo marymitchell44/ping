@@ -19,7 +19,7 @@ HEADERS = {
 def visit_site():
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Определяем время перед try
     try:
-        response = requests.get(URL, headers=HEADERS, timeout=10)
+        response = requests.get(URL, headers=HEADERS, timeout=30)
         if response.status_code == 200:
             print(f"[{now}] Сайт успешно посещён. Код ответа: {response.status_code}")
         else:
