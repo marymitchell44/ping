@@ -61,7 +61,7 @@ if __name__ == "__main__":
         current_hour = datetime.utcnow().hour
 
         # Проверяем, что время между 00:00 и 4:00 UTC (2:00–6:00 по Киеву)
-        if 0 <= current_hour < 4:
+        if 11 <= current_hour < 16:
             proxy = next(proxy_pool)  # Получаем следующий прокси из списка
             with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
                 for url in URLS:
