@@ -4,12 +4,17 @@ import requests
 import time
 from itertools import cycle
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
 # Загрузка переменных из файла .env
 load_dotenv()
 
-# URL для посещения
-URL = "http://webdesign-finder.com/cogniart/404"
+# Список URL для посещения
+URLS = [
+    "http://webdesign-finder.com/towy-v2/404",
+    "http://webdesign-finder.com/cogniart/404",
+    "http://webdesign-finder.com/deepdigital-v2/404",
+]
 
 # Заголовки для имитации браузера
 HEADERS = {
@@ -38,16 +43,16 @@ PROXIES = [
 proxy_pool = cycle(PROXIES)
 
 # Функция для посещения страницы
-def visit_site(proxy):
+def visit_site(url, proxy):
     try:
-        print(f"Посещение сайта через прокси: {proxy['http']}")
-        response = requests.get(URL, headers=HEADERS, proxies=proxy, timeout=1)
+        print(f"Посещение сайта {url} через прокси: {proxy['http']}")
+        response = requests.get(url, headers=HEADERS, proxies=proxy, timeout=1)
         if response.status_code == 200:
-            print("done")
+            print(f"done: {url}")
         else:
-            print(f"error: Код ответа {response.status_code}")
+            print(f"error: {url} Код ответа {response.status_code}")
     except Exception as e:
-        print(f"error: {e}")
+        print(f"error: {url} {e}")
 
 # Основной цикл с проверкой времени
 if __name__ == "__main__":
@@ -57,9 +62,11 @@ if __name__ == "__main__":
 
         # Проверяем, что время между 00:00 и 4:00 UTC (2:00–6:00 по Киеву)
         if 0 <= current_hour < 4:
-            proxy = next(proxy_pool)
-            visit_site(proxy)
-            time.sleep(1)  # Пауза 1 секунды между запросами
+            proxy = next(proxy_pool)  # Получаем следующий прокси из списка
+            with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
+                for url in URLS:
+                    executor.submit(visit_site, url, proxy)
+            time.sleep(1)  # Пауза 1 секунда между запусками потоков
         else:
             print("Вне заданного времени работы (2:00–6:00 по Киеву). Ожидание...")
             time.sleep(60)  # Проверка времени раз в минуту
