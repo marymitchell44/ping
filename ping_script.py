@@ -55,7 +55,7 @@ if __name__ == "__main__":
         # Получаем текущее серверное время (UTC)
         current_hour = datetime.utcnow().hour
 
-        # Проверяем, что время между 00:00 и 5:00 UTC (3:00–7:00 по Киеву)
+        # Проверяем, что время между 00:00 и 5:00 UTC (2:00–7:00 по Киеву)
         if 0 <= current_hour < 5:
             proxy = next(proxy_pool)
             visit_site(proxy)
