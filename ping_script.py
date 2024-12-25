@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import time
+import random
 from itertools import cycle
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
@@ -61,13 +62,30 @@ if __name__ == "__main__":
         current_hour = datetime.utcnow().hour
         current_minute = datetime.utcnow().minute
 
-        # Проверяем, что время входит в нужные интервалы
-        if (0 <= current_hour < 4) or (13 == current_hour and 0 <= current_minute < 20):
+        # Проверяем, что время входит в ночной интервал 2:00–6:00 по Киеву (0:00–4:00 UTC)
+        if 0 <= current_hour < 4:
             proxy = next(proxy_pool)  # Получаем следующий прокси из списка
             with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
                 for url in URLS:
                     executor.submit(visit_site, url, proxy)
             time.sleep(1)  # Пауза 1 секунда между запусками потоков
         else:
-            print("Вне заданного времени работы (2:00–6:00 и 15:00–15:20 по Киеву). Ожидание...")
-            time.sleep(60)  # Проверка времени раз в минуту
+            print("Вне ночного интервала. Запуск случайных сеансов.")
+            sessions = 3  # Количество случайных запусков
+            for _ in range(sessions):
+                start_delay = random.randint(10, 120)  # Случайная задержка перед запуском (10–120 секунд)
+                print(f"Ожидание {start_delay} секунд до следующего сеанса.")
+                time.sleep(start_delay)
+
+                proxy = next(proxy_pool)  # Получаем следующий прокси из списка
+                with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
+                    for url in URLS:
+                        executor.submit(visit_site, url, proxy)
+
+                session_duration = 10 * 60  # Длительность сеанса 10 минут
+                print(f"Сеанс начался, работа в течение {session_duration // 60} минут.")
+                time.sleep(session_duration)
+
+            print("Все случайные сеансы завершены. Ожидание следующего цикла.")
+            time.sleep(3600)  # Ожидание часа до следующего цикла
+
