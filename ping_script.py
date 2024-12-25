@@ -58,23 +58,16 @@ def visit_site(url, proxy):
 if __name__ == "__main__":
     while True:
         # Получаем текущее серверное время (UTC)
-        current_time = datetime.utcnow()
+        current_hour = datetime.utcnow().hour
+        current_minute = datetime.utcnow().minute
 
-        # Указываем временные интервалы работы
-        time_intervals = [
-            (time(0, 0), time(4, 0)),  # С 00:00 до 04:00 UTC (2:00–6:00 по Киеву)
-            (time(12, 45), time(13, 0)),  # С 14:45 до 15:00 по Киеву (12:45–13:00 UTC)
-        ]
-
-        # Проверяем, попадает ли текущее время в один из интервалов
-        is_within_interval = any(start <= current_time.time() < end for start, end in time_intervals)
-
-        if is_within_interval:
+        # Проверяем, что время входит в нужные интервалы
+        if (0 <= current_hour < 4) or (13 == current_hour and 0 <= current_minute < 20):
             proxy = next(proxy_pool)  # Получаем следующий прокси из списка
             with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
                 for url in URLS:
                     executor.submit(visit_site, url, proxy)
             time.sleep(1)  # Пауза 1 секунда между запусками потоков
         else:
-            print("Вне заданного времени работы (2:00–6:00 по Киеву). Ожидание...")
+            print("Вне заданного времени работы (2:00–6:00 и 15:00–15:20 по Киеву). Ожидание...")
             time.sleep(60)  # Проверка времени раз в минуту
