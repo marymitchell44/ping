@@ -62,7 +62,7 @@ if __name__ == "__main__":
         current_minute = datetime.utcnow().minute  # Объявление current_minute
         
         # Проверяем, что время входит в интервалы работы
-        if (0 <= current_hour < 1) or (11 == current_hour and 50 <= current_minute < 57) or (14 == current_hour and 20 <= current_minute < 30):
+        if (0 <= current_hour < 4) or (11 == current_hour and 18 <= current_minute < 27) or (14 == current_hour and 20 <= current_minute < 30):
             proxy = next(proxy_pool)  # Получаем следующий прокси из списка
             with ThreadPoolExecutor(max_workers=3) as executor:  # Используем 3 потока
                 for url in URLS:
